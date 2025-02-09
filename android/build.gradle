@@ -13,12 +13,11 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://www.jitpack.io' }  // ✅ Ensure JitPack is available for dependencies
     }
     dependencies {
-        classpath('com.android.tools.build:gradle:8.3.0')  // ✅ Explicit version to avoid conflicts
-        classpath('com.facebook.react:react-native-gradle-plugin:0.73.3')  // ✅ Ensure RN Gradle plugin version is set
-        classpath('org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.25')  // ✅ Explicit Kotlin version
+        classpath('com.android.tools.build:gradle')
+        classpath('com.facebook.react:react-native-gradle-plugin')
+        classpath('org.jetbrains.kotlin:kotlin-gradle-plugin')
     }
 }
 
@@ -37,15 +36,6 @@ allprojects {
 
         google()
         mavenCentral()
-        maven { url 'https://www.jitpack.io' }  // ✅ Ensure JitPack is available
-    }
-}
-
-// ✅ Force correct dependency resolution for BlurView
-subprojects {
-    project.configurations.all {
-        resolutionStrategy {
-            force 'com.github.Dimezis:BlurView:2.0.3'
-        }
+        maven { url 'https://www.jitpack.io' }
     }
 }

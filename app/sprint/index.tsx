@@ -19,7 +19,6 @@ export default function SprintsPage() {
   const navigation = useNavigation()
   const bottomSheetRef = useRef<BottomSheet>(null)
 
-  
   const {
     data: sprints,
     isLoading: fetchSprintsLoading,
@@ -29,12 +28,12 @@ export default function SprintsPage() {
     queryKey: ["fetchAllSprints"],
     queryFn: async () => await getAllSprints(),
   })
-  
+
   const {
     data: daysResponse,
     isLoading: fetchDaysLoading,
     error: fetchDaysError,
-  } = useQuery<{days: Day[]; nextCursor: string | null}>({
+  } = useQuery<{ days: Day[]; nextCursor: string | null }>({
     queryKey: ["fetchAllDays"],
     queryFn: async () => await getAllDays(false),
   })

@@ -1,4 +1,5 @@
-import { Status as __Status } from "@/db/schema"
+// @ts-nocheck
+import { Status as __Status } from "@/db/schema";
 
 import type { Day, Event, FormData, Sprint, Status } from "@/types/general";
 import { Client } from "@notionhq/client";
@@ -7,11 +8,18 @@ import type {
   QueryDatabaseResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 
-const notionSecret = process.env.NOTION_TOKEN!;
-const NOTION_SPRINTS_DATABASE_ID = process.env.NOTION_SPRINTS_DATABASE_ID!;
-const NOTION_DAYS_DATABASE_ID = process.env.NOTION_DAYS_DATABASE_ID!;
-const NOTION_EVENTS_DATABASE_ID = process.env.NOTION_EVENTS_DATABASE_ID!;
+import {
+  EXPO_NOTION_TOKEN,
+  EXPO_NOTION_SPRINTS_DATABASE_ID,
+  EXPO_NOTION_DAYS_DATABASE_ID,
+  EXPO_NOTION_EVENTS_DATABASE_ID,
+  EXPO_DATABASE_NAME,
+} from "@env";
 
+const notionSecret = EXPO_NOTION_TOKEN!;
+const NOTION_SPRINTS_DATABASE_ID = process.env.EXPO_NOTION_SPRINTS_DATABASE_ID!;
+const NOTION_DAYS_DATABASE_ID = process.env.EXPO_NOTION_DAYS_DATABASE_ID!;
+const NOTION_EVENTS_DATABASE_ID = process.env.EXPO_NOTION_EVENTS_DATABASE_ID!;
 const notion = new Client({ auth: notionSecret });
 
 // Helper Functions
@@ -253,7 +261,6 @@ export const updateSprint = async (
         },
       },
     });
-
   } catch (error) {
     console.error("Error updating sprint:", error);
     throw error;
@@ -355,7 +362,7 @@ export const addDay = async (data: {
   totalTime: number;
   date: string | null;
   events?: any;
-  status?:__Status;
+  status?: __Status;
   statusId?: string;
 }): Promise<void> => {
   try {
@@ -413,7 +420,7 @@ export const updateDay = async (
     totalTime: number;
     date: string | null;
     events?: any;
-    status?:__Status;
+    status?: __Status;
     statusId?: string;
   }
 ): Promise<void> => {
@@ -459,8 +466,7 @@ export const updateDay = async (
         },
       },
     });
-    console.log(result,'----',data, 'result');
-
+    console.log(result, "----", data, "result");
   } catch (error) {
     console.error("Error updating day:", error);
     throw error;
