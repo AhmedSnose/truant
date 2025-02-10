@@ -366,6 +366,8 @@ export const addDay = async (data: {
   statusId?: string;
 }): Promise<void> => {
   try {
+    console.log(data,'data');
+    
     const result = await notion.pages.create({
       parent: { database_id: NOTION_DAYS_DATABASE_ID },
       properties: {
@@ -397,11 +399,11 @@ export const addDay = async (data: {
           ],
         },
         statusId: {
-          number: +data.status?.id,
+          number: data.status?.id,
         },
-        Event: {
-          relation: data.events,
-        },
+        // Event: {
+        //   relation: data.events,
+        // },
       },
     });
   } catch (error) {

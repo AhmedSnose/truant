@@ -189,7 +189,7 @@ export default function DayEditPage() {
         rules={{ required: { value: true, message: ERROR_MESSAGES.REQUIRED } }}
         render={({ field: { onChange, value } }) => (
           <View>
-            <StatusDropdown value={value} onChange={onChange} error={errors.status?.message} />
+            <StatusDropdown mood="asLookup" value={value} onChange={onChange} error={errors.status?.message} />
             <HelperText type="error" visible={!!errors.status}>
               {errors.status?.message}
             </HelperText>

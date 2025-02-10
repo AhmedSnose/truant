@@ -115,62 +115,70 @@ export default function DayPage() {
 
 
   return (
-    <GestureHandlerRootView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <FlatList
-        data={data?.days}
-        renderItem={({ item }) => (
-          <DayCard
-            day={item}
-            onDelete={() => confirmDelete(item)}
-            onUpdate={() => handleUpdate(item)}
-            onLink={() => handleLinkDayWithEvents(item)}
-            onShow={() => handleShow(item.id!)}
-          />
-        )}
-        keyExtractor={(item) => item.id!}
-        contentContainerStyle={styles.list}
-      />
-      <TouchableOpacity style={[styles.fabStyle, { backgroundColor: theme.colors.primary }]} onPress={handleAddDay}>
-        <MaterialIcons name="add" size={24} color="white" />
-      </TouchableOpacity>
+    <>
 
-      <BottomSheet
-        index={-1}
-        enablePanDownToClose={true}
-        ref={bottomSheetRef}
-        onChange={handleSheetChanges}
-        backgroundStyle={{ backgroundColor: theme.colors.surface }}
-      >
-        <BottomSheetView style={styles.contentContainer}>
-          <EventSelector
-            events={eventsData?.events!}
-            refetchDays={refetchAllDays}
-            selectedDay={selectedDay}
-            onClose={() => bottomSheetRef.current?.close()}
+      <GestureHandlerRootView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+        {data?.days.length ?
+          <FlatList
+            data={data?.days}
+            renderItem={({ item }) => (
+              <DayCard
+                day={item}
+                onDelete={() => confirmDelete(item)}
+                onUpdate={() => handleUpdate(item)}
+                onLink={() => handleLinkDayWithEvents(item)}
+                onShow={() => handleShow(item.id!)}
+              />
+            )}
+            keyExtractor={(item) => item.id!}
+            contentContainerStyle={styles.list}
           />
-        </BottomSheetView>
-      </BottomSheet>
+          : <View style={styles.emptyState}>
+            <Text>No truants found. Add a new one to get started!</Text>
+          </View>}
+        <TouchableOpacity style={[styles.fabStyle, { backgroundColor: theme.colors.primary }]} onPress={handleAddDay}>
+          <MaterialIcons name="add" size={24} color="white" />
+        </TouchableOpacity>
 
-      <Portal>
-        <Modal
-          visible={deleteModalVisible}
-          onDismiss={() => setDeleteModalVisible(false)}
-          contentContainerStyle={[styles.modalContent, { backgroundColor: theme.colors.surface }]}
+        <BottomSheet
+          index={-1}
+          enablePanDownToClose={true}
+          ref={bottomSheetRef}
+          onChange={handleSheetChanges}
+          backgroundStyle={{ backgroundColor: theme.colors.surface }}
         >
-          <Text style={[styles.modalText, { color: theme.colors.onSurface }]}>
-            Are you sure you want to delete this day?
-          </Text>
-          <View style={styles.modalActions}>
-            <Button mode="contained" onPress={() => handleDelete(selectedDay?.id || "")} style={styles.modalButton}>
-              Delete
-            </Button>
-            <Button mode="outlined" onPress={() => setDeleteModalVisible(false)} style={styles.modalButton}>
-              Cancel
-            </Button>
-          </View>
-        </Modal>
-      </Portal>
-    </GestureHandlerRootView>
+          <BottomSheetView style={styles.contentContainer}>
+            <EventSelector
+              events={eventsData?.events!}
+              refetchDays={refetchAllDays}
+              selectedDay={selectedDay}
+              onClose={() => bottomSheetRef.current?.close()}
+            />
+          </BottomSheetView>
+        </BottomSheet>
+
+        <Portal>
+          <Modal
+            visible={deleteModalVisible}
+            onDismiss={() => setDeleteModalVisible(false)}
+            contentContainerStyle={[styles.modalContent, { backgroundColor: theme.colors.surface }]}
+          >
+            <Text style={[styles.modalText, { color: theme.colors.onSurface }]}>
+              Are you sure you want to delete this day?
+            </Text>
+            <View style={styles.modalActions}>
+              <Button mode="contained" onPress={() => handleDelete(selectedDay?.id || "")} style={styles.modalButton}>
+                Delete
+              </Button>
+              <Button mode="outlined" onPress={() => setDeleteModalVisible(false)} style={styles.modalButton}>
+                Cancel
+              </Button>
+            </View>
+          </Modal>
+        </Portal>
+      </GestureHandlerRootView>
+
+    </>
   )
 }
 
@@ -181,6 +189,11 @@ const styles = StyleSheet.create({
   },
   list: {
     paddingBottom: 80,
+  },
+  emptyState: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   fabStyle: {
     position: "absolute",
